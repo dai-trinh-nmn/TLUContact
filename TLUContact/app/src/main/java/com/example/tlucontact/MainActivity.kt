@@ -9,24 +9,28 @@ import androidx.fragment.app.Fragment
 import com.example.tlucontact.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-//Activity chinh cua ung dung
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var departmentRepository: DepartmentRepository
+    private lateinit var staffRepository: StaffRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //Thiet lap mau sac cho icon tim kiem
+        departmentRepository = DepartmentRepository(this)
+        staffRepository = StaffRepository(this)
+
+        // Set up search icon color
         val searchView = findViewById<SearchView>(R.id.searchView)
         val searchIcon = searchView.findViewById<ImageView>(androidx.appcompat.R.id.search_button)
         searchIcon.setColorFilter(Color.parseColor("#FFFFFF"))
 
-        //Thiet lap su kien cho BottomNavigationView
+        // Set up BottomNavigationView event
         binding.bottomNavigation.setOnNavigationItemSelectedListener(navListener)
 
-        //Load fragment mac dinh (Danh bạ đơn vị)
+        // Load default fragment (Department directory)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
@@ -34,21 +38,20 @@ class MainActivity : AppCompatActivity() {
                 .commit()
         }
 
-        //Thiet lap su kien tim kiem
+        // Set up search event
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 performSearch(query)
-                return true // Trả về true để cho biết đã xử lý sự kiện
+                return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 performSearch(newText)
-                return true // Trả về true để cho biết đã xử lý sự kiện
+                return true
             }
         })
     }
 
-    //Listener cho BottomNavigationView
     private val navListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         val selectedFragment: Fragment = when (item.itemId) {
             R.id.nav_department -> DepartmentFragment()
@@ -62,7 +65,6 @@ class MainActivity : AppCompatActivity() {
         true
     }
 
-    //Ham thuc hien tim kiem va cap nhat danh sach hien thi
     private fun performSearch(query: String?) {
         val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
 

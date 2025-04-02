@@ -46,6 +46,7 @@ android {
 dependencies {
 
     implementation("com.google.android.material:material:1.6.0")
+    implementation("androidx.sqlite:sqlite:2.4.0")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

@@ -5,5 +5,6 @@ data class Staff (
     val position: String,
     val phone: String,
     val email: String,
-    val department: String
+    val department: String,
+    val departmentId: Int
 )
